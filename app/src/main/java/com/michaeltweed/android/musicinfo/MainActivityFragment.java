@@ -23,6 +23,13 @@ public class MainActivityFragment extends MusicInfoBaseFragment implements MainA
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         currentlyPlayingTextView = (TextView) rootView.findViewById(R.id.currently_playing_textview);
 
+        return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         if (presenter == null) {
             presenter = new MainActivityFragmentPresenter(getBus(), this);
         }
@@ -32,13 +39,11 @@ public class MainActivityFragment extends MusicInfoBaseFragment implements MainA
         }
 
         getActivity().registerReceiver(receiver, new IntentFilter("com.spotify.music.metadatachanged"));
-
-        return rootView;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         getActivity().unregisterReceiver(receiver);
     }
 
