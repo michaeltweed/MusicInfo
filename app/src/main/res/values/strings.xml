@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SpotifyMusicInfo</string>
+    <string name="nothing_playing">There does not seem to be anything playing at the moment</string>
+
+</resources>
