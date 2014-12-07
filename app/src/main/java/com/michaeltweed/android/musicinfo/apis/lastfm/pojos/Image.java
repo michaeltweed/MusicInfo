@@ -9,6 +9,11 @@ public class Image {
 
     private String size;
 
+    public Image(String url, String size) {
+        this.url = url;
+        this.size = size;
+    }
+
     public String getUrl() {
         return url;
     }

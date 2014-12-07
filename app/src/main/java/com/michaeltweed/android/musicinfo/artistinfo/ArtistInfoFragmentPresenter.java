@@ -3,8 +3,11 @@ package com.michaeltweed.android.musicinfo.artistinfo;
 import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.ArtistResponse;
+import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Subscribe;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,6 +39,7 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
         try {
             String artistBio = artistResponse.getArtist().getBio().getContent();
             view.updateArtistBioText(artistBio);
+            view.setBackgroundImageToUrl(getCorrectImageUrlForArtist(artistResponse.getArtist().getImages()));
             view.setProgressBarVisibility(false);
         } catch (NullPointerException e) {
             onNoDataAvailableForArtist();
@@ -45,6 +49,14 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
     @Override
     public void failure(RetrofitError error) {
         onNoDataAvailableForArtist();
+    }
+
+    protected String getCorrectImageUrlForArtist(List<Image> imageList) {
+        try {
+            return imageList.get(imageList.size() - 1).getUrl();
+        } catch (IndexOutOfBoundsException e) {
+            throw new NullPointerException();
+        }
     }
 
     private void onNoDataAvailableForArtist() {

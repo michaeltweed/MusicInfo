@@ -37,7 +37,7 @@ public class Artist {
         return url;
     }
 
-    public List<Image> getImage() {
+    public List<Image> getImages() {
         return image;
     }
 

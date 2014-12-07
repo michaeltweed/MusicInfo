@@ -7,6 +7,7 @@ import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.michaeltweed.android.musicinfo.BusSingleton;
 import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.R;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
+import com.squareup.picasso.Picasso;
 
 import retrofit.RestAdapter;
 
@@ -21,6 +23,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
 
     private TextView artistInfoTextView;
     private ArtistInfoFragmentPresenter presenter;
+    private ImageView artistInfoImageView;
     private ProgressBar progressBar;
 
     public ArtistInfoFragment() {
@@ -40,6 +43,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.artist_info_fragment_layout, container, false);
         artistInfoTextView = (TextView) rootView.findViewById(R.id.artist_info_textview);
+        artistInfoImageView = (ImageView) rootView.findViewById(R.id.artist_info_imageview);
         progressBar = (ProgressBar) rootView.findViewById(R.id.artist_info_progress);
 
         return rootView;
@@ -67,10 +71,16 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
     public void setProgressBarVisibility(boolean shouldShow) {
         if (shouldShow) {
             artistInfoTextView.setVisibility(View.GONE);
+            artistInfoImageView.setImageBitmap(null);
             progressBar.setVisibility(View.VISIBLE);
         } else {
             artistInfoTextView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void setBackgroundImageToUrl(String url) {
+        Picasso.with(getActivity()).load(url).fit().centerCrop().into(artistInfoImageView);
     }
 }

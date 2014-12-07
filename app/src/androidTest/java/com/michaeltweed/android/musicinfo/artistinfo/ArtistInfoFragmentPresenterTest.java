@@ -4,9 +4,13 @@ import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.ArtistResponse;
+import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 
@@ -33,10 +37,27 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         Mockito.verify(view).setProgressBarVisibility(true);
     }
 
-    public void testViewIsUpdatedWhenApiRequestSucceeds() {
-        //TODO populate the ArtistResponse with some actual text and make sure this is passed through correctly
-        presenter.success(new ArtistResponse(), null);
-        Mockito.verify(view).updateArtistBioText(Mockito.anyString());
+    public void testViewIsUpdatedWhenApiRequestSucceedsWithValidData() {
+
+        ArtistResponse response = Mockito.mock(ArtistResponse.class, Mockito.RETURNS_DEEP_STUBS);
+        Mockito.when(response.getArtist().getImages()).thenReturn(getTestImageList());
+        Mockito.when(response.getArtist().getBio().getContent()).thenReturn("biography");
+
+        presenter.success(response, null);
+
+        Mockito.verify(view).updateArtistBioText("biography");
+        Mockito.verify(view).setBackgroundImageToUrl("url3");
+        Mockito.verify(view).setProgressBarVisibility(false);
+    }
+
+    public void testViewIsUpdatedWhenApiRequestSucceedsWithNonValidData() {
+
+        ArtistResponse response = Mockito.mock(ArtistResponse.class, Mockito.RETURNS_DEEP_STUBS);
+        Mockito.when(response.getArtist().getBio()).thenReturn(null);
+
+        presenter.success(response, null);
+
+        Mockito.verify(view).updateArtistBioText("No data available");
         Mockito.verify(view).setProgressBarVisibility(false);
     }
 
@@ -44,6 +65,39 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         presenter.failure(null);
         Mockito.verify(view).updateArtistBioText("No data available");
         Mockito.verify(view).setProgressBarVisibility(false);
+    }
+
+    public void testCorrectImageUrlIsReturnedWithValidData() {
+        List<Image> list = getTestImageList();
+        assertEquals("url3", presenter.getCorrectImageUrlForArtist(list));
+    }
+
+    private List<Image> getTestImageList() {
+        List<Image> list = new ArrayList<>();
+        list.add(new Image("url1", "small"));
+        list.add(new Image("url2", "medium"));
+        list.add(new Image("url3", "large"));
+        return list;
+    }
+
+    public void testNullPointerExceptionIsThrownIfImageUrlListIsEmpty() {
+        Exception exception = null;
+        try {
+            presenter.getCorrectImageUrlForArtist(new ArrayList<Image>());
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertTrue(exception instanceof NullPointerException);
+    }
+
+    public void testNullPointerExceptionIsThrownIfImageUrlListIsNull() {
+        Exception exception = null;
+        try {
+            presenter.getCorrectImageUrlForArtist(null);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertTrue(exception instanceof NullPointerException);
     }
 
 
