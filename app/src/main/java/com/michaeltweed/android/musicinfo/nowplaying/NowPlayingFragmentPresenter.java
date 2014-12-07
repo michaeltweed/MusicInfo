@@ -1,22 +1,26 @@
-package com.michaeltweed.android.musicinfo;
+package com.michaeltweed.android.musicinfo.nowplaying;
 
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-/**
- * Created by Michael on 06/12/2014.
- */
-public class MainActivityFragmentPresenter {
+public class NowPlayingFragmentPresenter {
 
 
     private final Bus bus;
-    private final MainActivityFragmentView view;
+    private final NowPlayingFragmentView view;
 
-    public MainActivityFragmentPresenter(Bus bus, MainActivityFragmentView view) {
+    public NowPlayingFragmentPresenter(Bus bus, NowPlayingFragmentView view) {
         this.bus = bus;
         this.view = view;
+    }
+
+    public void registerBus() {
         bus.register(this);
+    }
+
+    public void unRegisterBus() {
+        bus.unregister(this);
     }
 
     @Subscribe

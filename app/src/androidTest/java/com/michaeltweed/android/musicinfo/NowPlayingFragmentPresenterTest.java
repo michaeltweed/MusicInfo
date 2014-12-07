@@ -1,23 +1,23 @@
 package com.michaeltweed.android.musicinfo;
 
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
+import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragmentPresenter;
+import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragmentView;
 import com.squareup.otto.Bus;
-
-import junit.framework.TestCase;
 
 import org.mockito.Mockito;
 
-public class MainActivityFragmentPresenterTest extends ParentMusicInfoTestCase {
-    private MainActivityFragmentPresenter presenter;
+public class NowPlayingFragmentPresenterTest extends ParentMusicInfoTestCase {
+    private NowPlayingFragmentPresenter presenter;
     private Bus bus;
-    private MainActivityFragmentView view;
+    private NowPlayingFragmentView view;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         bus = Mockito.mock(Bus.class);
-        view = Mockito.mock(MainActivityFragmentView.class);
-        presenter = new MainActivityFragmentPresenter(bus, view);
+        view = Mockito.mock(NowPlayingFragmentView.class);
+        presenter = new NowPlayingFragmentPresenter(bus, view);
     }
 
     public void testReceivingEventUpdatesViewCorrectly() {
