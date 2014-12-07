@@ -5,4 +5,10 @@ package com.michaeltweed.android.musicinfo.nowplaying;
  */
 public interface NowPlayingFragmentView {
     void updateText(String toDisplay);
+
+    void updateBackgroundColor(int color);
+
+    void updateTextColor(int color);
+
+    void updateTitleColor(int color);
 }

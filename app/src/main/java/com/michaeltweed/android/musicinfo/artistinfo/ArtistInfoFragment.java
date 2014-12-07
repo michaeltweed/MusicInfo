@@ -1,7 +1,10 @@
 package com.michaeltweed.android.musicinfo.artistinfo;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.text.Html;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -15,6 +18,8 @@ import com.michaeltweed.android.musicinfo.BusSingleton;
 import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.R;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
+import com.michaeltweed.android.musicinfo.utils.PaletteTransformation;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import retrofit.RestAdapter;
@@ -35,7 +40,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
 
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Constants.LAST_FM_API_URL).build();
 
-        presenter = new ArtistInfoFragmentPresenter(this, restAdapter.create(LastFmInterface.class));
+        presenter = new ArtistInfoFragmentPresenter(BusSingleton.getBus(), this, restAdapter.create(LastFmInterface.class));
     }
 
     @Override
@@ -81,6 +86,18 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
 
     @Override
     public void setBackgroundImageToUrl(String url) {
-        Picasso.with(getActivity()).load(url).fit().centerCrop().into(artistInfoImageView);
+        Picasso.with(getActivity()).load(url).fit().centerCrop().transform(PaletteTransformation.instance()).into(artistInfoImageView, new Callback.EmptyCallback(){
+            @Override
+            public void onSuccess() {
+                Bitmap bitmap = ((BitmapDrawable) artistInfoImageView.getDrawable()).getBitmap();
+                Palette palette = PaletteTransformation.getPalette(bitmap);
+                presenter.paletteAvailable(palette);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 }

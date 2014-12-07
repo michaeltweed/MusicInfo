@@ -1,10 +1,14 @@
 package com.michaeltweed.android.musicinfo.artistinfo;
 
+import android.support.v7.graphics.Palette;
+
 import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.ArtistResponse;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
+import com.michaeltweed.android.musicinfo.events.PaletteAvailableEvent;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.io.UnsupportedEncodingException;
@@ -17,11 +21,13 @@ import retrofit.client.Response;
 
 public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
 
+    private final Bus bus;
     private ArtistInfoFragmentView view;
     private final LastFmInterface apiInterface;
     private String currentArtist;
 
-    public ArtistInfoFragmentPresenter(ArtistInfoFragmentView view, LastFmInterface apiInterface) {
+    public ArtistInfoFragmentPresenter(Bus bus, ArtistInfoFragmentView view, LastFmInterface apiInterface) {
+        this.bus = bus;
         this.view = view;
         this.apiInterface = apiInterface;
     }
@@ -76,5 +82,9 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
     private void onNoDataAvailableForArtist() {
         view.updateArtistBioText("No data available");
         view.setProgressBarVisibility(false);
+    }
+
+    public void paletteAvailable(Palette palette) {
+        bus.post(new PaletteAvailableEvent(palette));
     }
 }
