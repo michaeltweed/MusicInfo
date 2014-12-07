@@ -3,7 +3,6 @@ package com.michaeltweed.android.musicinfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Bus;
@@ -18,14 +17,6 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver {
 
     public SpotifyBroadcastReceiver(Bus bus) {
         this.bus = bus;
-    }
-
-    public void registerBus() {
-        bus.register(this);
-    }
-
-    public void unRegisterBus() {
-        bus.unregister(this);
     }
 
     @Override

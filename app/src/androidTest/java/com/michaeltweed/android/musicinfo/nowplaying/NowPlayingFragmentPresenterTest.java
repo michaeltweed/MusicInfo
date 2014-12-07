@@ -1,8 +1,7 @@
-package com.michaeltweed.android.musicinfo;
+package com.michaeltweed.android.musicinfo.nowplaying;
 
+import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
-import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragmentPresenter;
-import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragmentView;
 import com.squareup.otto.Bus;
 
 import org.mockito.Mockito;

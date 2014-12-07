@@ -15,14 +15,6 @@ public class NowPlayingFragmentPresenter {
         this.view = view;
     }
 
-    public void registerBus() {
-        bus.register(this);
-    }
-
-    public void unRegisterBus() {
-        bus.unregister(this);
-    }
-
     @Subscribe
     public void onSongChangedEvent(SongChangedEvent event) {
         String artist = event.getArtist();

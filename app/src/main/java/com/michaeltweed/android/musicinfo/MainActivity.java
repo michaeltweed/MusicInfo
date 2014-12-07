@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.michaeltweed.android.musicinfo.artistinfo.ArtistInfoFragment;
 import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragment;
 
 
@@ -23,7 +24,8 @@ public class MainActivity extends FragmentActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.container, new NowPlayingFragment());
+        ft.replace(R.id.now_playing_fragment, new NowPlayingFragment());
+        ft.replace(R.id.artist_info_fragment, new ArtistInfoFragment());
         ft.commit();
     }
 
@@ -31,12 +33,12 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        receiver.unRegisterBus();
+        BusSingleton.getBus().unregister(receiver);
     }
 
     private void setUpBroadcastReceiver() {
         receiver = new SpotifyBroadcastReceiver(BusSingleton.getBus());
-        receiver.registerBus();
+        BusSingleton.getBus().register(receiver);
         registerReceiver(receiver, new IntentFilter("com.spotify.music.metadatachanged"));
     }
 

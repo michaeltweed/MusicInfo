@@ -27,7 +27,7 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.now_playing_fragment_layout, container, false);
         currentlyPlayingTextView = (TextView) rootView.findViewById(R.id.currently_playing_textview);
 
         return rootView;
@@ -36,13 +36,13 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
     @Override
     public void onResume() {
         super.onResume();
-        presenter.registerBus();
+        BusSingleton.getBus().register(presenter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        presenter.unRegisterBus();
+        BusSingleton.getBus().unregister(presenter);
     }
 
     @Override
