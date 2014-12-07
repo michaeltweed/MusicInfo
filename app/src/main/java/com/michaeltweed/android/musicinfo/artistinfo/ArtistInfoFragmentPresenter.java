@@ -7,6 +7,8 @@ import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Subscribe;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import retrofit.Callback;
@@ -17,6 +19,7 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
 
     private ArtistInfoFragmentView view;
     private final LastFmInterface apiInterface;
+    private String currentArtist;
 
     public ArtistInfoFragmentPresenter(ArtistInfoFragmentView view, LastFmInterface apiInterface) {
         this.view = view;
@@ -25,17 +28,28 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
 
     @Subscribe
     public void onSongChangedEvent(SongChangedEvent event) {
-        String artist = event.getArtist();
-        if (artist == null) {
+        currentArtist = event.getArtist();
+        if (currentArtist == null) {
             return; //may have been called by producer at first with null values
         } else {
             view.setProgressBarVisibility(true);
-            apiInterface.getArtistResponse("artist.getinfo", artist, "1", "", Constants.LAST_FM_API_KEY, "json", this);
+            apiInterface.getArtistResponse("artist.getinfo", currentArtist, "1", "", Constants.LAST_FM_API_KEY, "json", this);
         }
     }
 
     @Override
     public void success(ArtistResponse artistResponse, Response response) {
+        boolean isLatestRequest = false;
+
+        try {
+            String encodedArtistName = URLEncoder.encode(currentArtist, "UTF-8");
+            isLatestRequest = response.getUrl().contains(encodedArtistName);
+        } catch (UnsupportedEncodingException e) {
+        }
+
+        if (!isLatestRequest) {
+            return;
+        }
         try {
             String artistBio = artistResponse.getArtist().getBio().getContent();
             view.updateArtistBioText(artistBio);
