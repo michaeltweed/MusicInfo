@@ -72,14 +72,6 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         assertEquals("url3", presenter.getCorrectImageUrlForArtist(list));
     }
 
-    private List<Image> getTestImageList() {
-        List<Image> list = new ArrayList<>();
-        list.add(new Image("url1", "small"));
-        list.add(new Image("url2", "medium"));
-        list.add(new Image("url3", "large"));
-        return list;
-    }
-
     public void testNullPointerExceptionIsThrownIfImageUrlListIsEmpty() {
         Exception exception = null;
         try {
@@ -100,5 +92,12 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         assertTrue(exception instanceof NullPointerException);
     }
 
+    private List<Image> getTestImageList() {
+        List<Image> list = new ArrayList<>();
+        list.add(new Image("url1", "small"));
+        list.add(new Image("url2", "medium"));
+        list.add(new Image("url3", "large"));
+        return list;
+    }
 
 }
