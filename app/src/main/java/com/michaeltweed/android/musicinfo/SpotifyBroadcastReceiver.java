@@ -13,7 +13,8 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver {
     private Bus bus;
     private String lastArtistName;
     private String lastAlbumName;
-    private String lsatTrackName;
+    private String lastTrackName;
+    private SongChangedEvent lastEvent;
 
     public SpotifyBroadcastReceiver(Bus bus) {
         this.bus = bus;
@@ -23,13 +24,14 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         lastArtistName = intent.getStringExtra("artist");
         lastAlbumName = intent.getStringExtra("album");
-        lsatTrackName = intent.getStringExtra("track");
+        lastTrackName = intent.getStringExtra("track");
 
-        bus.post(new SongChangedEvent(lastArtistName, lastAlbumName, lsatTrackName));
+        lastEvent = new SongChangedEvent(lastArtistName, lastAlbumName, lastTrackName);
+        bus.post(lastEvent);
     }
 
     @Produce
     public SongChangedEvent produceLastSongChangedEvent() {
-        return new SongChangedEvent(lastArtistName, lastAlbumName, lsatTrackName);
+        return lastEvent;
     }
 }
