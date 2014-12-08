@@ -41,10 +41,42 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
     }
 
     public void testApiRequestIsMadeWhenSongChangedEventIsReceived() {
-        SongChangedEvent event = new SongChangedEvent("Bruce Springsteen", "The River", "Jackson Cage");
+        SongChangedEvent event = new SongChangedEvent("Bruce Springsteen & The E-Street Band", "The River", "Jackson Cage");
         presenter.onSongChangedEvent(event);
-        Mockito.verify(apiInterface).getArtistResponse(eq("artist.getinfo"), eq("Bruce Springsteen"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+        Mockito.verify(apiInterface).getArtistResponse(eq("artist.getinfo"), eq("Bruce Springsteen & The E-Street Band"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
         Mockito.verify(view).setProgressBarVisibility(true);
+    }
+
+    public void testThatChangingTheSongToTheSameArtistDoesNothing() {
+        SongChangedEvent event = new SongChangedEvent("Bruce Springsteen & The E-Street Band", "The River", "Jackson Cage");
+        presenter.onSongChangedEvent(event);
+
+        Mockito.reset(apiInterface, view);
+
+        SongChangedEvent event2 = new SongChangedEvent("Bruce Springsteen & The E-Street Band", "Darkness On The Edge Of Town", "The Promised Land");
+        presenter.onSongChangedEvent(event2);
+
+        Mockito.verifyZeroInteractions(apiInterface, view);
+    }
+
+    public void testThatChangingTheSongToADifferentArtistSendsAPIRequest() {
+        SongChangedEvent event = new SongChangedEvent("Sam Cooke", "The Man Who Invented Soul", "Bring It On Home To Me");
+        presenter.onSongChangedEvent(event);
+
+        Mockito.reset(apiInterface, view);
+
+        SongChangedEvent event2 = new SongChangedEvent("Otis Rush", "Right Place, Wrong Time", "Natural Ball");
+        presenter.onSongChangedEvent(event2);
+
+        Mockito.verify(apiInterface).getArtistResponse(eq("artist.getinfo"), eq("Otis Rush"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+        Mockito.verify(view).setProgressBarVisibility(true);
+
+    }
+
+    public void testThatReceivingSongChangedEventWithNoArtistDoesNothing() {
+        presenter.onSongChangedEvent(new SongChangedEvent(null, null, null));
+
+        Mockito.verifyZeroInteractions(apiInterface, view);
     }
 
     public void testViewIsUpdatedWhenApiRequestSucceedsWithValidData() {
@@ -107,7 +139,7 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         }
         assertTrue(exception instanceof NullPointerException);
     }
-
+    
     public void testBusEventIsSentWhenPaletteIsAvailable() {
         presenter.paletteAvailable(Palette.generate(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_launcher)));
         Mockito.verify(bus).post(isA(PaletteAvailableEvent.class));

@@ -34,10 +34,13 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
 
     @Subscribe
     public void onSongChangedEvent(SongChangedEvent event) {
-        currentArtist = event.getArtist();
-        if (currentArtist == null) {
-            return; //may have been called by producer at first with null values
+
+        if (event.getArtist() == null || event.getArtist().equals(currentArtist)) {
+            //null may have been called by producer at first with empty values
+            //if the artist has not changed there is no need to make a new request
+            return;
         } else {
+            currentArtist = event.getArtist();
             view.setProgressBarVisibility(true);
             apiInterface.getArtistResponse("artist.getinfo", currentArtist, "1", "", Constants.LAST_FM_API_KEY, "json", this);
         }
