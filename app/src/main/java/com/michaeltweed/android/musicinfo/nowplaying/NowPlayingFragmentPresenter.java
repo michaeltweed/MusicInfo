@@ -30,10 +30,7 @@ public class NowPlayingFragmentPresenter {
 
     @Subscribe
     public void onPaletteAvailableEvent(PaletteAvailableEvent event) {
-        Palette.Swatch swatch = event.getPalette().getDarkVibrantSwatch();
-        if (swatch == null) {
-            swatch = event.getPalette().getLightVibrantSwatch();
-        }
+        Palette.Swatch swatch = getSwatch(event.getPalette());
 
         if (swatch != null) {
             view.updateBackgroundColor(swatch.getRgb());
@@ -44,5 +41,25 @@ public class NowPlayingFragmentPresenter {
             view.updateTitleColor(Color.WHITE);
             view.updateTextColor(Color.WHITE);
         }
+    }
+
+    //this code isn't pretty, but I want to get a swatch if one exists
+    //as it is pleasing visually. I also want to check in this order
+    private Palette.Swatch getSwatch(Palette palette) {
+        if (palette.getVibrantSwatch() != null) {
+            return palette.getVibrantSwatch();
+        } else if (palette.getDarkVibrantSwatch() != null) {
+            return palette.getDarkVibrantSwatch();
+        } else if (palette.getLightVibrantSwatch() != null) {
+            return palette.getLightVibrantSwatch();
+        } else if (palette.getDarkMutedSwatch() != null) {
+            return palette.getDarkMutedSwatch();
+        } else if (palette.getLightMutedSwatch() != null) {
+            return palette.getLightMutedSwatch();
+        } else if (palette.getMutedSwatch() != null) {
+            return palette.getMutedSwatch();
+        }
+
+        return null;
     }
 }
