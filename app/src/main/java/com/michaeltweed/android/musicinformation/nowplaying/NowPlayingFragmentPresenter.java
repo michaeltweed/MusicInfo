@@ -1,0 +1,65 @@
+package com.michaeltweed.android.musicinformation.nowplaying;
+
+import android.graphics.Color;
+import android.support.v7.graphics.Palette;
+
+import com.michaeltweed.android.musicinformation.events.PaletteAvailableEvent;
+import com.michaeltweed.android.musicinformation.events.SongChangedEvent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+public class NowPlayingFragmentPresenter {
+
+
+    private final Bus bus;
+    private final NowPlayingFragmentView view;
+
+    public NowPlayingFragmentPresenter(Bus bus, NowPlayingFragmentView view) {
+        this.bus = bus;
+        this.view = view;
+    }
+
+    @Subscribe
+    public void onSongChangedEvent(SongChangedEvent event) {
+        String artist = event.getArtist();
+        String album = event.getAlbum();
+        String track = event.getTrack();
+
+        view.updateText(track + " | " + album + " - " + artist);
+    }
+
+    @Subscribe
+    public void onPaletteAvailableEvent(PaletteAvailableEvent event) {
+        Palette.Swatch swatch = getSwatch(event.getPalette());
+
+        if (swatch != null) {
+            view.updateBackgroundColor(swatch.getRgb());
+            view.updateTitleColor(swatch.getTitleTextColor());
+            view.updateTextColor(swatch.getBodyTextColor());
+        } else {
+            view.updateBackgroundColor(Color.BLACK);
+            view.updateTitleColor(Color.WHITE);
+            view.updateTextColor(Color.WHITE);
+        }
+    }
+
+    //this code isn't pretty, but I want to get a swatch if one exists
+    //as it is pleasing visually. I also want to check in this order
+    private Palette.Swatch getSwatch(Palette palette) {
+        if (palette.getVibrantSwatch() != null) {
+            return palette.getVibrantSwatch();
+        } else if (palette.getDarkVibrantSwatch() != null) {
+            return palette.getDarkVibrantSwatch();
+        } else if (palette.getLightVibrantSwatch() != null) {
+            return palette.getLightVibrantSwatch();
+        } else if (palette.getDarkMutedSwatch() != null) {
+            return palette.getDarkMutedSwatch();
+        } else if (palette.getLightMutedSwatch() != null) {
+            return palette.getLightMutedSwatch();
+        } else if (palette.getMutedSwatch() != null) {
+            return palette.getMutedSwatch();
+        }
+
+        return null;
+    }
+}
