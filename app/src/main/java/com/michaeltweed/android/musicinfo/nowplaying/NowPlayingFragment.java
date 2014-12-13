@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.michaeltweed.android.musicinfo.BusSingleton;
 import com.michaeltweed.android.musicinfo.R;
 
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+
 public class NowPlayingFragment extends Fragment implements NowPlayingFragmentView {
 
     private NowPlayingFragmentPresenter presenter;
@@ -56,6 +59,10 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
     @Override
     public void updateBackgroundColor(int color) {
         rootView.setBackgroundColor(color);
+
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setStatusBarColor(color);
+        }
     }
 
     @Override

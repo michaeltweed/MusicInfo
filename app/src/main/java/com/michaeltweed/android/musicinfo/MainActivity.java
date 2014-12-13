@@ -1,10 +1,12 @@
 package com.michaeltweed.android.musicinfo;
 
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.WindowManager;
 
 import com.michaeltweed.android.musicinfo.artistinfo.ArtistInfoFragment;
 import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragment;
@@ -18,6 +20,11 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
+
         setContentView(R.layout.main_activity_layout);
 
         setUpBroadcastReceiver();
