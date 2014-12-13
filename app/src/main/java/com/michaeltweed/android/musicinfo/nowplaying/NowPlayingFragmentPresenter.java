@@ -25,7 +25,8 @@ public class NowPlayingFragmentPresenter {
         String album = event.getAlbum();
         String track = event.getTrack();
 
-        view.updateText(track + " | " + album + " - " + artist);
+        view.updateSongText(track);
+        view.updateAlbumArtistText(album + " - " + artist);
     }
 
     @Subscribe

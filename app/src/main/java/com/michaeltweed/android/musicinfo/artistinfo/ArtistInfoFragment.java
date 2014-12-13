@@ -83,10 +83,12 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
     public void setProgressBarVisibility(boolean shouldShow) {
         if (shouldShow) {
             artistInfoTextView.setVisibility(View.GONE);
+            artistPlayCountTextView.setVisibility(View.GONE);
             artistInfoImageView.setImageBitmap(null);
             progressBar.setVisibility(View.VISIBLE);
         } else {
             artistInfoTextView.setVisibility(View.VISIBLE);
+            artistPlayCountTextView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
     }

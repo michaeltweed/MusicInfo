@@ -27,7 +27,8 @@ public class NowPlayingFragmentPresenterTest extends ParentMusicInfoTestCase {
     public void testReceivingSongChangedEventUpdatesViewCorrectly() {
         SongChangedEvent event = new SongChangedEvent("Bob Dylan", "Bringing It All Back Home", "Bob Dylan's 115th Dream");
         presenter.onSongChangedEvent(event);
-        Mockito.verify(view).updateText("Bob Dylan's 115th Dream | Bringing It All Back Home - Bob Dylan");
+        Mockito.verify(view).updateSongText("Bob Dylan's 115th Dream");
+        Mockito.verify(view).updateAlbumArtistText("Bringing It All Back Home - Bob Dylan");
     }
 
     public void testReceivingPaletteChangedEventUpdatesViewCorrectly() {

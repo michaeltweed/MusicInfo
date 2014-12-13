@@ -16,9 +16,10 @@ import static android.os.Build.VERSION_CODES;
 public class NowPlayingFragment extends Fragment implements NowPlayingFragmentView {
 
     private NowPlayingFragmentPresenter presenter;
-    private TextView currentlyPlayingTextView;
-    private View rootView;
     private TextView titleTextView;
+    private TextView currentlyPlayingSongTextView;
+    private TextView currentlyPlayingAlbumArtistTextView;
+    private View rootView;
 
     public NowPlayingFragment() {
     }
@@ -34,7 +35,11 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.now_playing_fragment_layout, container, false);
         titleTextView = (TextView) rootView.findViewById(R.id.currently_playing_title_textview);
-        currentlyPlayingTextView = (TextView) rootView.findViewById(R.id.currently_playing_textview);
+        currentlyPlayingSongTextView = (TextView) rootView.findViewById(R.id.currently_playing_song_textview);
+        currentlyPlayingAlbumArtistTextView = (TextView) rootView.findViewById(R.id.currently_playing_album_artist_textview);
+
+        currentlyPlayingSongTextView.setSelected(true);
+        currentlyPlayingAlbumArtistTextView.setSelected(true);
 
         return rootView;
     }
@@ -52,8 +57,13 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
     }
 
     @Override
-    public void updateText(String toDisplay) {
-        currentlyPlayingTextView.setText(toDisplay);
+    public void updateSongText(String toDisplay) {
+        currentlyPlayingSongTextView.setText(toDisplay);
+    }
+
+    @Override
+    public void updateAlbumArtistText(String toDisplay) {
+        currentlyPlayingAlbumArtistTextView.setText(toDisplay);
     }
 
     @Override
@@ -67,7 +77,8 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
 
     @Override
     public void updateTextColor(int color) {
-        currentlyPlayingTextView.setTextColor(color);
+        currentlyPlayingSongTextView.setTextColor(color);
+        currentlyPlayingAlbumArtistTextView.setTextColor(color);
     }
 
     @Override
