@@ -7,8 +7,6 @@ import com.squareup.otto.Bus;
 
 import org.mockito.Mockito;
 
-import static org.mockito.Matchers.isA;
-
 public class SpotifyBroadcastReceiverTest extends ParentMusicInfoTestCase {
     private SpotifyBroadcastReceiver spotifyBroadcastReceiver;
     private Bus bus;

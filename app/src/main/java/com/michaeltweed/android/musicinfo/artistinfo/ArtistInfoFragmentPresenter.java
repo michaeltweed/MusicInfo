@@ -42,7 +42,7 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
         } else {
             currentArtist = event.getArtist();
             view.setProgressBarVisibility(true);
-            apiInterface.getArtistResponse("artist.getinfo", currentArtist, "1", "", Constants.LAST_FM_API_KEY, "json", this);
+            apiInterface.getArtistResponse("artist.getinfo", currentArtist, "1", Constants.LAST_FM_USERNAME, Constants.LAST_FM_API_KEY, "json", this);
         }
     }
 
@@ -61,12 +61,30 @@ public class ArtistInfoFragmentPresenter implements Callback<ArtistResponse> {
         }
         try {
             String artistBio = artistResponse.getArtist().getBio().getContent();
+
             view.updateArtistBioText(artistBio);
+            view.updateArtistPlayCount(getCorrectPlayCountText(artistResponse.getArtist().getStats().getUserplaycount()));
             view.setBackgroundImageToUrl(getCorrectImageUrlForArtist(artistResponse.getArtist().getImages()));
             view.setProgressBarVisibility(false);
         } catch (NullPointerException e) {
             onNoDataAvailableForArtist();
         }
+    }
+
+    private String getCorrectPlayCountText(String artistPlayCount) {
+        if (artistPlayCount == null) {
+            return "You need to sign in to view personal statistics";
+        }
+
+        if (artistPlayCount.equals("0")) {
+            return "This is your first time listening to this artist";
+        }
+
+        if (artistPlayCount.equals("1")) {
+            return "You have listened to this artist " + artistPlayCount + " time";
+        }
+
+        return "You have listened to this artist " + artistPlayCount + " times";
     }
 
     @Override

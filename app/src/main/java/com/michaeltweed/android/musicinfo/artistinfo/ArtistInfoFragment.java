@@ -30,6 +30,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
     private ArtistInfoFragmentPresenter presenter;
     private ImageView artistInfoImageView;
     private ProgressBar progressBar;
+    private TextView artistPlayCountTextView;
 
     public ArtistInfoFragment() {
     }
@@ -48,6 +49,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.artist_info_fragment_layout, container, false);
         artistInfoTextView = (TextView) rootView.findViewById(R.id.artist_info_textview);
+        artistPlayCountTextView = (TextView) rootView.findViewById(R.id.artist_play_count_textview);
         artistInfoImageView = (ImageView) rootView.findViewById(R.id.artist_info_imageview);
         progressBar = (ProgressBar) rootView.findViewById(R.id.artist_info_progress);
 
@@ -73,6 +75,11 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
     }
 
     @Override
+    public void updateArtistPlayCount(String text) {
+        artistPlayCountTextView.setText(text);
+    }
+
+    @Override
     public void setProgressBarVisibility(boolean shouldShow) {
         if (shouldShow) {
             artistInfoTextView.setVisibility(View.GONE);
@@ -86,7 +93,7 @@ public class ArtistInfoFragment extends Fragment implements ArtistInfoFragmentVi
 
     @Override
     public void setBackgroundImageToUrl(String url) {
-        Picasso.with(getActivity()).load(url).fit().centerCrop().transform(PaletteTransformation.instance()).into(artistInfoImageView, new Callback.EmptyCallback(){
+        Picasso.with(getActivity()).load(url).fit().centerCrop().transform(PaletteTransformation.instance()).into(artistInfoImageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
                 Bitmap bitmap = ((BitmapDrawable) artistInfoImageView.getDrawable()).getBitmap();
