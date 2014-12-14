@@ -14,6 +14,7 @@ import com.michaeltweed.android.musicinfo.R;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.artist.image.ArtistImageFragment;
 import com.michaeltweed.android.musicinfo.artist.info.ArtistInfoFragment;
+import com.michaeltweed.android.musicinfo.utils.DepthPageTransformer;
 
 import retrofit.RestAdapter;
 
@@ -48,6 +49,7 @@ public class ArtistFragment extends Fragment implements ArtistFragmentView {
         progressBar = (ProgressBar) rootView.findViewById(R.id.artist_fragment_progress);
 
         viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(true, new DepthPageTransformer());
 
         return rootView;
     }

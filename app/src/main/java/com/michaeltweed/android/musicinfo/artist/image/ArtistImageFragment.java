@@ -20,6 +20,7 @@ public class ArtistImageFragment extends Fragment {
 
     private ImageView artistInfoImageView;
     private ArtistImageFragmentPresenter presenter;
+    private String urlToSet;
 
 
     public ArtistImageFragment() {
@@ -37,6 +38,10 @@ public class ArtistImageFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.artist_image_fragment_layout, container, false);
         artistInfoImageView = (ImageView) rootView.findViewById(R.id.artist_info_imageview);
 
+        if (urlToSet != null) {
+            loadUrlWithPicasso(urlToSet);
+        }
+
         return rootView;
     }
 
@@ -53,6 +58,14 @@ public class ArtistImageFragment extends Fragment {
     }
 
     public void setBackgroundImageToUrl(String url) {
+        if (artistInfoImageView == null) {
+            urlToSet = url;
+        } else {
+            loadUrlWithPicasso(url);
+        }
+    }
+
+    private void loadUrlWithPicasso(String url) {
         Picasso.with(getActivity()).load(url).fit().centerCrop().transform(PaletteTransformation.instance()).into(artistInfoImageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
