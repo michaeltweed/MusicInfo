@@ -34,6 +34,7 @@ public class NowPlayingFragment extends Fragment implements NowPlayingFragmentVi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.now_playing_fragment_layout, container, false);
+
         titleTextView = (TextView) rootView.findViewById(R.id.currently_playing_title_textview);
         currentlyPlayingSongTextView = (TextView) rootView.findViewById(R.id.currently_playing_song_textview);
         currentlyPlayingAlbumArtistTextView = (TextView) rootView.findViewById(R.id.currently_playing_album_artist_textview);

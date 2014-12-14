@@ -1,15 +1,10 @@
-package com.michaeltweed.android.musicinfo.artistinfo;
-
-import android.graphics.BitmapFactory;
-import android.support.v7.graphics.Palette;
+package com.michaeltweed.android.musicinfo.artist;
 
 import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
-import com.michaeltweed.android.musicinfo.R;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.ArtistResponse;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
-import com.michaeltweed.android.musicinfo.events.PaletteAvailableEvent;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Bus;
 
@@ -25,19 +20,19 @@ import retrofit.client.Response;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 
-public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
+public class ArtistFragmentPresenterTest extends ParentMusicInfoTestCase {
     private Bus bus;
     private LastFmInterface apiInterface;
-    private ArtistInfoFragmentView view;
-    private ArtistInfoFragmentPresenter presenter;
+    private ArtistFragmentView view;
+    private ArtistFragmentPresenter presenter;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         bus = Mockito.mock(Bus.class);
         apiInterface = Mockito.mock(LastFmInterface.class);
-        view = Mockito.mock(ArtistInfoFragmentView.class);
-        presenter = new ArtistInfoFragmentPresenter(bus, view, apiInterface);
+        view = Mockito.mock(ArtistFragmentView.class);
+        presenter = new ArtistFragmentPresenter(bus, view, apiInterface);
     }
 
     public void testApiRequestIsMadeWhenSongChangedEventIsReceived() {
@@ -179,11 +174,6 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
             exception = e;
         }
         assertTrue(exception instanceof NullPointerException);
-    }
-    
-    public void testBusEventIsSentWhenPaletteIsAvailable() {
-        presenter.paletteAvailable(Palette.generate(BitmapFactory.decodeResource(getContext().getResources(), R.drawable.ic_launcher)));
-        Mockito.verify(bus).post(isA(PaletteAvailableEvent.class));
     }
 
     private List<Image> getTestImageList() {

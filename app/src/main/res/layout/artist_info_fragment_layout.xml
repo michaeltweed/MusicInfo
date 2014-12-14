@@ -3,52 +3,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
 
-        <ImageView
-            android:id="@+id/artist_info_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="bottom">
-
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                card_view:cardCornerRadius="2dp"
-                style="@style/artist_info_cardview_style">
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            card_view:cardCornerRadius="2dp"
+            style="@style/artist_info_cardview_style">
 
             <TextView
                 android:id="@+id/artist_play_count_textview"
                 android:textStyle="bold"
                 style="@style/artist_info_textview_style" />
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                card_view:cardCornerRadius="2dp"
-                style="@style/artist_info_cardview_style">
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            card_view:cardCornerRadius="2dp"
+            style="@style/artist_info_cardview_style">
 
-                <TextView
-                    android:id="@+id/artist_info_textview"
-                    style="@style/artist_info_textview_style" />
+            <TextView
+                android:id="@+id/artist_info_textview"
+                style="@style/artist_info_textview_style" />
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/artist_info_progress"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.WindowManager;
 
-import com.michaeltweed.android.musicinfo.artistinfo.ArtistInfoFragment;
+import com.michaeltweed.android.musicinfo.artist.ArtistFragment;
 import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragment;
 
 
@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.now_playing_fragment, new NowPlayingFragment());
-        ft.replace(R.id.artist_info_fragment, new ArtistInfoFragment());
+        ft.replace(R.id.artist_info_fragment, new ArtistFragment());
         ft.commit();
     }
 

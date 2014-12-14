@@ -1,6 +1,6 @@
-package com.michaeltweed.android.musicinfo.artistinfo;
+package com.michaeltweed.android.musicinfo.artist;
 
-public interface ArtistInfoFragmentView {
+public interface ArtistFragmentView {
     void updateArtistBioText(String text);
 
     void updateArtistPlayCount(String text);
