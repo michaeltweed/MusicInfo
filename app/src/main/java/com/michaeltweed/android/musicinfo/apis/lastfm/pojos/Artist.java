@@ -25,6 +25,19 @@ public class Artist {
 
     private Bio bio;
 
+    public Artist(String name, String mbid, String url, List<Image> image, String streamable, String ontour, Stats stats, Similar similar, Tags tags, Bio bio) {
+        this.name = name;
+        this.mbid = mbid;
+        this.url = url;
+        this.image = image;
+        this.streamable = streamable;
+        this.ontour = ontour;
+        this.stats = stats;
+        this.similar = similar;
+        this.tags = tags;
+        this.bio = bio;
+    }
+
     public String getName() {
         return name;
     }

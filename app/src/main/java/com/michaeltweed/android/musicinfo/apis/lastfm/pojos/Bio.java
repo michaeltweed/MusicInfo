@@ -2,7 +2,6 @@ package com.michaeltweed.android.musicinfo.apis.lastfm.pojos;
 
 public class Bio {
 
-
     private Links links;
 
     private String published;
@@ -14,6 +13,15 @@ public class Bio {
     private String placeformed;
 
     private String yearformed;
+
+    public Bio(Links links, String published, String summary, String content, String placeformed, String yearformed) {
+        this.links = links;
+        this.published = published;
+        this.summary = summary;
+        this.content = content;
+        this.placeformed = placeformed;
+        this.yearformed = yearformed;
+    }
 
     public Links getLinks() {
         return links;

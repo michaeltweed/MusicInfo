@@ -9,21 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.michaeltweed.android.musicinfo.BusSingleton;
-import com.michaeltweed.android.musicinfo.Constants;
 import com.michaeltweed.android.musicinfo.R;
-import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
-import com.michaeltweed.android.musicinfo.artist.image.ArtistImageFragment;
-import com.michaeltweed.android.musicinfo.artist.info.ArtistInfoFragment;
 import com.michaeltweed.android.musicinfo.utils.DepthPageTransformer;
-
-import retrofit.RestAdapter;
 
 public class ArtistFragment extends Fragment implements ArtistFragmentView {
 
     private ViewPager viewPager;
     private ArtistFragmentPresenter presenter;
-    private ArtistImageFragment imageFragment;
-    private ArtistInfoFragment infoFragment;
     private ArtistViewPagerAdapter adapter;
     private ProgressBar progressBar;
 
@@ -31,14 +23,9 @@ public class ArtistFragment extends Fragment implements ArtistFragmentView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Constants.LAST_FM_API_URL).build();
+        presenter = new ArtistFragmentPresenter(this);
 
-        presenter = new ArtistFragmentPresenter(BusSingleton.getBus(), this, restAdapter.create(LastFmInterface.class));
-
-        imageFragment = new ArtistImageFragment();
-        infoFragment = new ArtistInfoFragment();
-
-        adapter = new ArtistViewPagerAdapter(getChildFragmentManager(), imageFragment, infoFragment);
+        adapter = new ArtistViewPagerAdapter(getChildFragmentManager());
     }
 
     @Override
@@ -66,15 +53,6 @@ public class ArtistFragment extends Fragment implements ArtistFragmentView {
         BusSingleton.getBus().unregister(presenter);
     }
 
-    @Override
-    public void updateArtistBioText(String text) {
-        infoFragment.updateArtistBioText(text);
-    }
-
-    @Override
-    public void updateArtistPlayCount(String text) {
-        infoFragment.updateArtistPlayCount(text);
-    }
 
     @Override
     public void setProgressBarVisibility(boolean shouldShow) {
@@ -87,8 +65,4 @@ public class ArtistFragment extends Fragment implements ArtistFragmentView {
         }
     }
 
-    @Override
-    public void setBackgroundImageToUrl(String url) {
-        imageFragment.setBackgroundImageToUrl(url);
-    }
 }

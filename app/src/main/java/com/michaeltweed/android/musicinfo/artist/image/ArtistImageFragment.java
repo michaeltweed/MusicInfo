@@ -16,12 +16,10 @@ import com.michaeltweed.android.musicinfo.utils.PaletteTransformation;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-public class ArtistImageFragment extends Fragment {
+public class ArtistImageFragment extends Fragment implements ArtistImageFragmentView{
 
     private ImageView artistInfoImageView;
     private ArtistImageFragmentPresenter presenter;
-    private String urlToSet;
-
 
     public ArtistImageFragment() {
     }
@@ -29,7 +27,7 @@ public class ArtistImageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ArtistImageFragmentPresenter(BusSingleton.getBus());
+        presenter = new ArtistImageFragmentPresenter(BusSingleton.getBus(), this);
     }
 
     @Override
@@ -37,10 +35,6 @@ public class ArtistImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.artist_image_fragment_layout, container, false);
         artistInfoImageView = (ImageView) rootView.findViewById(R.id.artist_info_imageview);
-
-        if (urlToSet != null) {
-            loadUrlWithPicasso(urlToSet);
-        }
 
         return rootView;
     }
@@ -57,15 +51,8 @@ public class ArtistImageFragment extends Fragment {
         BusSingleton.getBus().unregister(presenter);
     }
 
-    public void setBackgroundImageToUrl(String url) {
-        if (artistInfoImageView == null) {
-            urlToSet = url;
-        } else {
-            loadUrlWithPicasso(url);
-        }
-    }
-
-    private void loadUrlWithPicasso(String url) {
+    @Override
+    public void setImageBackgroundToUrl(String url) {
         Picasso.with(getActivity()).load(url).fit().centerCrop().transform(PaletteTransformation.instance()).into(artistInfoImageView, new Callback.EmptyCallback() {
             @Override
             public void onSuccess() {
@@ -77,8 +64,17 @@ public class ArtistImageFragment extends Fragment {
 
             @Override
             public void onError() {
-
+                setImageToPlaceholder();
             }
         });
+    }
+
+    @Override
+    public void setImageBackgroundToEmpty() {
+        setImageToPlaceholder();
+    }
+
+    private void setImageToPlaceholder() {
+        artistInfoImageView.setImageResource(R.drawable.artist_image_placeholder);
     }
 }

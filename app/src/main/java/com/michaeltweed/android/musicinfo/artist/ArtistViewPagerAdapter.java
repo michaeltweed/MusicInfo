@@ -12,10 +12,11 @@ public class ArtistViewPagerAdapter extends FragmentPagerAdapter {
     private final ArtistImageFragment imageFragment;
     private final ArtistInfoFragment infoFragment;
 
-    public ArtistViewPagerAdapter(FragmentManager fm, ArtistImageFragment imageFragment, ArtistInfoFragment infoFragment) {
+    public ArtistViewPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.imageFragment = imageFragment;
-        this.infoFragment = infoFragment;
+
+        imageFragment = new ArtistImageFragment();
+        infoFragment = new ArtistInfoFragment();
     }
 
     @Override

@@ -7,5 +7,6 @@
     <ImageView
         android:id="@+id/artist_info_imageview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:src="@drawable/artist_image_placeholder"/>
 </FrameLayout>
