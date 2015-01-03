@@ -3,7 +3,8 @@ package com.michaeltweed.android.musicinfo;
 import android.content.Intent;
 
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
-import com.michaeltweed.android.musicinfo.events.ArtistChangedEvent;
+import com.michaeltweed.android.musicinfo.events.DataChangedEvent;
+import com.michaeltweed.android.musicinfo.events.LastFmUsernameChangedEvent;
 import com.michaeltweed.android.musicinfo.events.NoArtistInfoAvailableEvent;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Bus;
@@ -52,15 +53,15 @@ public class SpotifyBroadcastReceiverTest extends ParentMusicInfoTestCase {
 
         spotifyBroadcastReceiver.onReceive(null, getTestIntent(testArtist, testAlbum, testTrack));
 
-        Mockito.verify(bus).post(isA(ArtistChangedEvent.class));
-        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist"), eq("1"), eq(Constants.LAST_FM_USERNAME), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+        Mockito.verify(bus).post(isA(DataChangedEvent.class));
+        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
 
         Mockito.reset(bus, lastFmInterface);
 
         spotifyBroadcastReceiver.onReceive(null, getTestIntent("testArtist2", testAlbum, testTrack));
 
-        Mockito.verify(bus).post(isA(ArtistChangedEvent.class));
-        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist2"), eq("1"), eq(Constants.LAST_FM_USERNAME), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+        Mockito.verify(bus).post(isA(DataChangedEvent.class));
+        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist2"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
 
     }
 
@@ -68,8 +69,8 @@ public class SpotifyBroadcastReceiverTest extends ParentMusicInfoTestCase {
 
         spotifyBroadcastReceiver.onReceive(null, getTestIntent(testArtist, testAlbum, testTrack));
 
-        Mockito.verify(bus).post(isA(ArtistChangedEvent.class));
-        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist"), eq("1"), eq(Constants.LAST_FM_USERNAME), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+        Mockito.verify(bus).post(isA(DataChangedEvent.class));
+        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist"), eq("1"), eq(""), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
 
         Mockito.reset(bus, lastFmInterface);
 
@@ -77,7 +78,7 @@ public class SpotifyBroadcastReceiverTest extends ParentMusicInfoTestCase {
 
         Mockito.verifyZeroInteractions(lastFmInterface);
 
-        Mockito.verify(bus, never()).post(isA(ArtistChangedEvent.class));
+        Mockito.verify(bus, never()).post(isA(DataChangedEvent.class));
     }
 
     public void testRetrofitLatestRequestSuccessPostsToBus() {
@@ -114,6 +115,34 @@ public class SpotifyBroadcastReceiverTest extends ParentMusicInfoTestCase {
         spotifyBroadcastReceiver.failure(getRetrofitErrorForArtist("Albert Collins"));
 
         Mockito.verify(bus, never()).post(isA(NoArtistInfoAvailableEvent.class));
+    }
+
+    public void testLastFmUsernameChangedEventDoesNothingWhenNull() {
+        spotifyBroadcastReceiver.onLastFmUsernameChanged(null);
+
+        Mockito.verifyZeroInteractions(lastFmInterface);
+    }
+
+    public void testLastFmUsernameChangedEventToSameUsernameDoesNothing() {
+        spotifyBroadcastReceiver.onLastFmUsernameChanged(new LastFmUsernameChangedEvent("username1"));
+
+        Mockito.reset(lastFmInterface);
+
+        spotifyBroadcastReceiver.onLastFmUsernameChanged(new LastFmUsernameChangedEvent("username1"));
+
+        Mockito.verifyZeroInteractions(lastFmInterface);
+    }
+
+    public void testLastFmUsernameChangedEventToNewUsernameSendsAPIRequest() {
+        spotifyBroadcastReceiver.onReceive(null, getTestIntent("testArtist2", testAlbum, testTrack));
+
+        Mockito.reset(lastFmInterface);
+
+        spotifyBroadcastReceiver.onLastFmUsernameChanged(new LastFmUsernameChangedEvent("username1"));
+
+        Mockito.verify(lastFmInterface).getArtistResponse(eq("artist.getinfo"), eq("testArtist2"), eq("1"), eq("username1"), eq(Constants.LAST_FM_API_KEY), eq("json"), isA(Callback.class));
+
+
     }
 
 

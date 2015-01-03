@@ -1,7 +1,7 @@
 package com.michaeltweed.android.musicinfo.artist;
 
-import com.michaeltweed.android.musicinfo.events.ArtistChangedEvent;
 import com.michaeltweed.android.musicinfo.events.ArtistResponseEvent;
+import com.michaeltweed.android.musicinfo.events.DataChangedEvent;
 import com.michaeltweed.android.musicinfo.events.NoArtistInfoAvailableEvent;
 import com.squareup.otto.Subscribe;
 
@@ -14,7 +14,7 @@ public class ArtistFragmentPresenter{
     }
 
     @Subscribe
-    public void onArtistChangedEvent(ArtistChangedEvent event) {
+    public void onArtistChangedEvent(DataChangedEvent event) {
         if (event != null) {
             view.setProgressBarVisibility(true);
         }

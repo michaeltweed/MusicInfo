@@ -7,14 +7,15 @@ import android.content.Intent;
 import com.michaeltweed.android.musicinfo.apis.lastfm.LastFmInterface;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.ArtistResponse;
 import com.michaeltweed.android.musicinfo.artist.FilteredArtistResponse;
-import com.michaeltweed.android.musicinfo.events.ArtistChangedEvent;
 import com.michaeltweed.android.musicinfo.events.ArtistResponseEvent;
+import com.michaeltweed.android.musicinfo.events.DataChangedEvent;
+import com.michaeltweed.android.musicinfo.events.LastFmUsernameChangedEvent;
 import com.michaeltweed.android.musicinfo.events.NoArtistInfoAvailableEvent;
 import com.michaeltweed.android.musicinfo.events.SongChangedEvent;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import retrofit.Callback;
@@ -26,6 +27,7 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
     private final Bus bus;
     private final LastFmInterface apiInterface;
     private String lastArtistName;
+    private String lastFmUsername = "";
 
     private ArtistResponseEvent lastArtistResponseEvent;
     private NoArtistInfoAvailableEvent lastNoArtistInfoAvailableEvent;
@@ -54,10 +56,9 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
 
     private void onArtistChanged(String artistName) {
         lastArtistName = artistName;
-        bus.post(new ArtistChangedEvent());
+        bus.post(new DataChangedEvent());
 
-        //request data from the API
-        apiInterface.getArtistResponse("artist.getinfo", lastArtistName, "1", Constants.LAST_FM_USERNAME, Constants.LAST_FM_API_KEY, "json", this);
+        requestDataFromApi();
     }
 
     @Override
@@ -77,6 +78,7 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
             postNoArtistAvailableEventToBus();
         } else {
             lastArtistResponseEvent = new ArtistResponseEvent(filteredArtistResponse);
+            lastNoArtistInfoAvailableEvent = null;
             bus.post(lastArtistResponseEvent);
         }
     }
@@ -90,13 +92,17 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
         postNoArtistAvailableEventToBus();
     }
 
+    private void requestDataFromApi() {
+        apiInterface.getArtistResponse("artist.getinfo", lastArtistName, "1", lastFmUsername, Constants.LAST_FM_API_KEY, "json", this);
+    }
+
     private boolean isLatestRequest(String url) {
         boolean isLatest = false;
 
         try {
             String encodedArtistName = URLEncoder.encode(lastArtistName, "UTF-8");
             isLatest = url.contains(encodedArtistName);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -105,7 +111,22 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
 
     private void postNoArtistAvailableEventToBus() {
         lastNoArtistInfoAvailableEvent = new NoArtistInfoAvailableEvent(lastArtistName);
+        lastArtistResponseEvent = null;
         bus.post(lastNoArtistInfoAvailableEvent);
+    }
+
+    @Subscribe
+    public void onLastFmUsernameChanged(LastFmUsernameChangedEvent event) {
+        if (event != null) {
+            if (event.getUsername() != null) {
+                if (!event.getUsername().equals(lastFmUsername)) {
+                    //only do something if username changed
+                    lastFmUsername = event.getUsername();
+
+                    requestDataFromApi();
+                }
+            }
+        }
     }
 
     @Produce

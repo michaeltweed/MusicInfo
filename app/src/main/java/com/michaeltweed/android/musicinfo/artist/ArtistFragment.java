@@ -36,6 +36,7 @@ public class ArtistFragment extends Fragment implements ArtistFragmentView {
         progressBar = (ProgressBar) rootView.findViewById(R.id.artist_fragment_progress);
 
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
         viewPager.setPageTransformer(true, new DepthPageTransformer());
 
         return rootView;

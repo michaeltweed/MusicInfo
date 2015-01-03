@@ -1,8 +1,8 @@
 package com.michaeltweed.android.musicinfo.artist;
 
 import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
-import com.michaeltweed.android.musicinfo.events.ArtistChangedEvent;
 import com.michaeltweed.android.musicinfo.events.ArtistResponseEvent;
+import com.michaeltweed.android.musicinfo.events.DataChangedEvent;
 import com.michaeltweed.android.musicinfo.events.NoArtistInfoAvailableEvent;
 
 import org.mockito.Mockito;
@@ -37,7 +37,7 @@ public class ArtistFragmentPresenterTest extends ParentMusicInfoTestCase {
     }
 
     public void testViewIsUpdatedWhenValidArtistChangedEventReceived() {
-        presenter.onArtistChangedEvent(new ArtistChangedEvent());
+        presenter.onArtistChangedEvent(new DataChangedEvent());
 
         Mockito.verify(view).setProgressBarVisibility(true);
     }

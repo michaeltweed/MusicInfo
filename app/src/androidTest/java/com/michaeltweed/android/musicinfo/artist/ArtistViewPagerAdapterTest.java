@@ -2,6 +2,7 @@ package com.michaeltweed.android.musicinfo.artist;
 
 import android.support.v4.app.FragmentManager;
 
+import com.michaeltweed.android.musicinfo.LastFmUsernameFragment;
 import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
 import com.michaeltweed.android.musicinfo.artist.image.ArtistImageFragment;
 import com.michaeltweed.android.musicinfo.artist.info.ArtistInfoFragment;
@@ -19,11 +20,12 @@ public class ArtistViewPagerAdapterTest extends ParentMusicInfoTestCase {
     }
 
     public void testGetViewReturnsCorrectInteger() {
-        assertEquals(2, adapter.getCount());
+        assertEquals(3, adapter.getCount());
     }
 
     public void testGetItemReturnsCorrectFragment() {
-        assertEquals(true, adapter.getItem(0) instanceof ArtistImageFragment);
-        assertEquals(true, adapter.getItem(1) instanceof ArtistInfoFragment);
+        assertEquals(true, adapter.getItem(0) instanceof LastFmUsernameFragment);
+        assertEquals(true, adapter.getItem(1) instanceof ArtistImageFragment);
+        assertEquals(true, adapter.getItem(2) instanceof ArtistInfoFragment);
     }
 }
