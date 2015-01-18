@@ -11,7 +11,7 @@ public class SharedPreferencesHelper {
     private final SharedPreferences sharedPref;
 
     public enum PrefsType {
-        LAST_FM_USERNAME;
+        LAST_FM_USERNAME
     }
 
     public SharedPreferencesHelper(Context context) {
@@ -34,5 +34,15 @@ public class SharedPreferencesHelper {
         }
 
         return null;
+    }
+
+    public void writeBooleanToSharedPreferences(String key, boolean toStore) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(key, toStore);
+        editor.commit();
+    }
+
+    public boolean getBooleanFromSharedPreferences(String key) {
+        return sharedPref.getBoolean(key, false);
     }
 }

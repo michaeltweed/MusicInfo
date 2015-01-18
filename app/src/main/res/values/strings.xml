@@ -4,5 +4,8 @@
     <string name="app_name">SpotifyMusicInfo</string>
     <string name="last_played_message">Your last-played track through Spotify was:</string>
     <string name="nothing_playing">No track found</string>
+    <string name="title_activity_player_chooser">PlayerChooserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

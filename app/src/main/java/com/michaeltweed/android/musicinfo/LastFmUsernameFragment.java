@@ -1,6 +1,7 @@
 package com.michaeltweed.android.musicinfo;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.michaeltweed.android.musicinfo.playerchooser.PlayerChooserDialogFragment;
 import com.michaeltweed.android.musicinfo.utils.SharedPreferencesHelper;
 
 public class LastFmUsernameFragment extends Fragment implements LastFmUsernameView {
@@ -32,6 +34,14 @@ public class LastFmUsernameFragment extends Fragment implements LastFmUsernameVi
             @Override
             public void onClick(View v) {
                 presenter.onButtonPressed(editText.getText().toString());
+            }
+        });
+
+        rootView.findViewById(R.id.buttonNew).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new PlayerChooserDialogFragment();
+                newFragment.show(getActivity().getSupportFragmentManager(), "playerChooser");
             }
         });
 
