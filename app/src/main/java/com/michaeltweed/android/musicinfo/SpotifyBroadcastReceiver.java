@@ -93,7 +93,7 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
     }
 
     private void requestDataFromApi() {
-        apiInterface.getArtistResponse("artist.getinfo", lastArtistName, "1", lastFmUsername, Constants.LAST_FM_API_KEY, "json", this);
+        apiInterface.getArtistResponse("artist.getinfo", lastArtistName, "1", lastFmUsername, Constants.getLastFmApiKey(), "json", this);
     }
 
     private boolean isLatestRequest(String url) {

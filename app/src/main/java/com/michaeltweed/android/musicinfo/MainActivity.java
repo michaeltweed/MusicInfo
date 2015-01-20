@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void setUpBroadcastReceiver() {
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Constants.LAST_FM_API_URL).build();
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Constants.getLastFmApiUrl()).build();
 
         receiver = new SpotifyBroadcastReceiver(BusSingleton.getBus(), restAdapter.create(LastFmInterface.class));
         BusSingleton.getBus().register(receiver);

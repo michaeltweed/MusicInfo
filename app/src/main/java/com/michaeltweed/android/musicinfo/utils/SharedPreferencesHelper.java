@@ -15,7 +15,7 @@ public class SharedPreferencesHelper {
     }
 
     public SharedPreferencesHelper(Context context) {
-        sharedPref = context.getSharedPreferences(Constants.SHARED_PREFS_FILE_NAME, Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences(Constants.getSharedPrefsFileName(), Context.MODE_PRIVATE);
     }
 
     public void writeStringToSharedPreference(PrefsType type, String toStore) {
