@@ -26,7 +26,7 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
 
     private final Bus bus;
     private final LastFmInterface apiInterface;
-    private String lastArtistName;
+    private String lastArtistName = "";
     private String lastFmUsername = "";
 
     private ArtistResponseEvent lastArtistResponseEvent;

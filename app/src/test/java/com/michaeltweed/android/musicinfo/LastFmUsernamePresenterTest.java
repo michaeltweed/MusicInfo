@@ -4,30 +4,33 @@ import com.michaeltweed.android.musicinfo.events.LastFmUsernameChangedEvent;
 import com.michaeltweed.android.musicinfo.utils.SharedPreferencesHelper;
 import com.squareup.otto.Bus;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import static com.michaeltweed.android.musicinfo.utils.SharedPreferencesHelper.PrefsType.LAST_FM_USERNAME;
 
-public class LastFmUsernamePresenterTest extends ParentMusicInfoTestCase {
+public class LastFmUsernamePresenterTest {
 
     private Bus bus;
     private LastFmUsernameView view;
     private SharedPreferencesHelper sharedPrefs;
 
-    public void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() {
         bus = Mockito.mock(Bus.class);
         view = Mockito.mock(LastFmUsernameView.class);
         sharedPrefs = Mockito.mock(SharedPreferencesHelper.class);
     }
 
+    @Test
     public void testCallIsMadeToSharedPreferencesOnStart() {
         LastFmUsernamePresenter presenter = new LastFmUsernamePresenter(bus, view, sharedPrefs);
 
         Mockito.verify(sharedPrefs).getStringFromSharedPreferences(LAST_FM_USERNAME);
     }
 
+    @Test
     public void testCorrectActionsPerformedWhenValidValueInSharedPreferences() {
         Mockito.when(sharedPrefs.getStringFromSharedPreferences(LAST_FM_USERNAME)).thenReturn("testUsername");
 
@@ -38,6 +41,7 @@ public class LastFmUsernamePresenterTest extends ParentMusicInfoTestCase {
         Mockito.verify(bus).post(new LastFmUsernameChangedEvent("testUsername"));
     }
 
+    @Test
     public void testCorrectActionsPerformedWhenEmptyValueInSharedPreferences() {
         Mockito.when(sharedPrefs.getStringFromSharedPreferences(LAST_FM_USERNAME)).thenReturn("");
 
@@ -46,6 +50,7 @@ public class LastFmUsernamePresenterTest extends ParentMusicInfoTestCase {
         Mockito.verifyZeroInteractions(view, bus);
     }
 
+    @Test
     public void testCorrectActionsPerformedWhenNullValueInSharedPreferences() {
         Mockito.when(sharedPrefs.getStringFromSharedPreferences(LAST_FM_USERNAME)).thenReturn(null);
 
@@ -54,6 +59,7 @@ public class LastFmUsernamePresenterTest extends ParentMusicInfoTestCase {
         Mockito.verifyZeroInteractions(view, bus);
     }
 
+    @Test
     public void testCorrectActionsPerformedOnButtonPressWithUsername() {
         Mockito.when(sharedPrefs.getStringFromSharedPreferences(LAST_FM_USERNAME)).thenReturn("testUsername");
 
@@ -65,6 +71,7 @@ public class LastFmUsernamePresenterTest extends ParentMusicInfoTestCase {
         Mockito.verify(view).setTextBoxEnabled(true);
     }
 
+    @Test
     public void testCorrectActionsPerformedOnButtonPressWithoutUsername() {
         Mockito.when(sharedPrefs.getStringFromSharedPreferences(LAST_FM_USERNAME)).thenReturn("");
 

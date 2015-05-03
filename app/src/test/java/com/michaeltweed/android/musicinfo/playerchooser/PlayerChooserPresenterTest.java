@@ -1,23 +1,26 @@
 package com.michaeltweed.android.musicinfo.playerchooser;
 
 import com.michaeltweed.android.musicinfo.Constants;
-import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
 import com.michaeltweed.android.musicinfo.utils.SharedPreferencesHelper;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
-public class PlayerChooserPresenterTest extends ParentMusicInfoTestCase {
+import static org.junit.Assert.assertEquals;
+
+public class PlayerChooserPresenterTest {
 
     private SharedPreferencesHelper sharedPreferencesHelper;
     private PlayerChooserPresenter presenter;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() {
         sharedPreferencesHelper = Mockito.mock(SharedPreferencesHelper.class);
         presenter = new PlayerChooserPresenter(sharedPreferencesHelper);
     }
 
+    @Test
     public void testCallIsMadeToSharedPreferencesOnStart() {
         Mockito.reset(sharedPreferencesHelper);
         PlayerChooserPresenter testPresenter = new PlayerChooserPresenter(sharedPreferencesHelper);
@@ -27,6 +30,7 @@ public class PlayerChooserPresenterTest extends ParentMusicInfoTestCase {
         }
     }
 
+    @Test
     public void testGetOptionNamesReturnsCorrectly() {
         String[] expected = Constants.getIntentFilterHashMap().keySet().toArray(new String[Constants.getIntentFilterHashMap().size()]);
 
@@ -35,6 +39,7 @@ public class PlayerChooserPresenterTest extends ParentMusicInfoTestCase {
         }
     }
 
+    @Test
     public void testSelectedArrayReturnsCorrectly() {
         Mockito.when(sharedPreferencesHelper.getBooleanFromSharedPreferences("Spotify")).thenReturn(true);
         Mockito.when(sharedPreferencesHelper.getBooleanFromSharedPreferences("HTC Music")).thenReturn(false);
@@ -46,6 +51,7 @@ public class PlayerChooserPresenterTest extends ParentMusicInfoTestCase {
         assertEquals(false, selectedArray[2]);
     }
 
+    @Test
     public void testOnOptionClickedPerformsCorrectly() {
 
         //item will be false by default

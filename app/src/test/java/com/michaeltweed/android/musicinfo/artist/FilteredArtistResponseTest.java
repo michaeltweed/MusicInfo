@@ -6,18 +6,16 @@ import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Bio;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Image;
 import com.michaeltweed.android.musicinfo.apis.lastfm.pojos.Stats;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilteredArtistResponseTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    public void setUp() throws Exception {
-        super.setUp();
+public class FilteredArtistResponseTest {
 
-    }
-
+    @Test
     public void testArtistBioOfNullParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithBio(null);
 
@@ -26,6 +24,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("No artist biography available", filteredResponse.getArtistBio());
     }
 
+    @Test
     public void testArtistBioOfEmptyParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithBio("");
 
@@ -34,6 +33,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("No artist biography available", filteredResponse.getArtistBio());
     }
 
+    @Test
     public void testArtistBioOfValidStringParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithBio("Test artist bio");
 
@@ -42,6 +42,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("Test artist bio", filteredResponse.getArtistBio());
     }
 
+    @Test
     public void testArtistPlayCountOfNullParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithPlayCount(null);
 
@@ -50,6 +51,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("No personal statistics available", filteredResponse.getArtistPlayCount());
     }
 
+    @Test
     public void testArtistPlayCountOfEmptyParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithPlayCount("");
 
@@ -58,6 +60,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("No personal statistics available", filteredResponse.getArtistPlayCount());
     }
 
+    @Test
     public void testArtistPlayCountOfZeroParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithPlayCount("0");
 
@@ -66,6 +69,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("You have listened to this artist 0 times", filteredResponse.getArtistPlayCount());
     }
 
+    @Test
     public void testArtistPlayCountOfOneParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithPlayCount("1");
 
@@ -74,6 +78,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("You have listened to this artist 1 time", filteredResponse.getArtistPlayCount());
     }
 
+    @Test
     public void testArtistPlayCountGreaterThanOneParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithPlayCount("100");
 
@@ -82,6 +87,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("You have listened to this artist 100 times", filteredResponse.getArtistPlayCount());
     }
 
+    @Test
     public void testArtistImageListWithNullDataParsedSuccessfully() {
         ArtistResponse response = getArtistResponseWithImages(null);
 
@@ -91,6 +97,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals(null, filteredResponse.getArtistImageUrl());
     }
 
+    @Test
     public void testArtistImageListWithEmptyStringDataParsedSuccessfully() {
         List<Image> images = new ArrayList<>();
         images.add(new Image("", "small"));
@@ -103,6 +110,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals(null, filteredResponse.getArtistImageUrl());
     }
 
+    @Test
     public void testArtistImageListWithEmptyArrayDataParsedSuccessfully() {
 
         ArtistResponse response = getArtistResponseWithImages(new ArrayList<Image>());
@@ -113,6 +121,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals(null, filteredResponse.getArtistImageUrl());
     }
 
+    @Test
     public void testArtistImageListWithValidDataParsedSuccessfully() {
         List<Image> images = new ArrayList<>();
         images.add(new Image("url1", "small"));
@@ -127,6 +136,7 @@ public class FilteredArtistResponseTest extends TestCase {
         assertEquals("url3", filteredResponse.getArtistImageUrl());
     }
 
+    @Test
     public void testIsEmptyResponseWithValidData() {
         FilteredArtistResponse response1 = new FilteredArtistResponse("test", "test2", "test3");
         assertEquals(false, response1.isEmptyResponse());

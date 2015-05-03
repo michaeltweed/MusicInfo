@@ -1,36 +1,39 @@
 package com.michaeltweed.android.musicinfo.artist.info;
 
-import com.michaeltweed.android.musicinfo.ParentMusicInfoTestCase;
 import com.michaeltweed.android.musicinfo.artist.FilteredArtistResponse;
 import com.michaeltweed.android.musicinfo.events.ArtistResponseEvent;
 import com.michaeltweed.android.musicinfo.events.NoArtistInfoAvailableEvent;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
-public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
+public class ArtistInfoFragmentPresenterTest {
 
     private ArtistInfoFragmentView view;
     private ArtistInfoFragmentPresenter presenter;
 
-    public void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() {
         view = Mockito.mock(ArtistInfoFragmentView.class);
         presenter = new ArtistInfoFragmentPresenter(view);
     }
 
+    @Test
     public void testViewIsNotUpdatedWithNullArtistResponse() {
         presenter.onArtistResponseReceived(null);
 
         Mockito.verifyZeroInteractions(view);
     }
 
+    @Test
     public void testViewIsNotUpdatedWhenNullNoArtistEventReceived() {
         presenter.onNoArtistInformationAvailable(null);
 
         Mockito.verifyZeroInteractions(view);
     }
 
+    @Test
     public void testViewIsUpdatedCorrectlyWithValidArtistResponse() {
         FilteredArtistResponse response = new FilteredArtistResponse("Test Bio", "Test Play Count", null);
 
@@ -41,6 +44,7 @@ public class ArtistInfoFragmentPresenterTest extends ParentMusicInfoTestCase {
         Mockito.verify(view).setArtistPlayCountVisibility(true);
     }
 
+    @Test
     public void testViewIsUpdatedCorrectlyWithValidNoArtistAvailableEventReceived() {
         presenter.onNoArtistInformationAvailable(new NoArtistInfoAvailableEvent("Test Artist"));
 
