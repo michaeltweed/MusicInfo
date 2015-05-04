@@ -49,15 +49,20 @@ public class NowPlayingFragmentPresenter {
     private Palette.Swatch getSwatch(Palette palette) {
         if (palette.getVibrantSwatch() != null) {
             return palette.getVibrantSwatch();
-        } else if (palette.getDarkVibrantSwatch() != null) {
+        }
+        if (palette.getDarkVibrantSwatch() != null) {
             return palette.getDarkVibrantSwatch();
-        } else if (palette.getLightVibrantSwatch() != null) {
+        }
+        if (palette.getLightVibrantSwatch() != null) {
             return palette.getLightVibrantSwatch();
-        } else if (palette.getDarkMutedSwatch() != null) {
+        }
+        if (palette.getDarkMutedSwatch() != null) {
             return palette.getDarkMutedSwatch();
-        } else if (palette.getLightMutedSwatch() != null) {
+        }
+        if (palette.getLightMutedSwatch() != null) {
             return palette.getLightMutedSwatch();
-        } else if (palette.getMutedSwatch() != null) {
+        }
+        if (palette.getMutedSwatch() != null) {
             return palette.getMutedSwatch();
         }
 

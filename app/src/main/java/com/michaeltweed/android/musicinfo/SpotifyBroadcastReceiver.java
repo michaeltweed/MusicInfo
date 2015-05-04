@@ -45,12 +45,15 @@ public class SpotifyBroadcastReceiver extends BroadcastReceiver implements Callb
         String intentAlbum = intent.getStringExtra("album");
         String intentTrack = intent.getStringExtra("track");
 
-        lastSongChangedEvent = new SongChangedEvent(intentArtist, intentAlbum, intentTrack);
-        bus.post(lastSongChangedEvent);
+        if (intentArtist != null && intentAlbum != null && intentTrack != null) {
 
-        if (!(intentArtist.equals(lastArtistName))) {
-            //we only do something if the artist has changed
-            onArtistChanged(intentArtist);
+            lastSongChangedEvent = new SongChangedEvent(intentArtist, intentAlbum, intentTrack);
+            bus.post(lastSongChangedEvent);
+
+            if (!(lastArtistName.equals(intentArtist))) {
+                //we only do something if the artist has changed
+                onArtistChanged(intentArtist);
+            }
         }
     }
 

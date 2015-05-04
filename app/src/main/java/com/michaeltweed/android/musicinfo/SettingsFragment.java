@@ -2,7 +2,6 @@ package com.michaeltweed.android.musicinfo;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import com.michaeltweed.android.musicinfo.playerchooser.PlayerChooserDialogFragment;
 import com.michaeltweed.android.musicinfo.utils.SharedPreferencesHelper;
 
-public class LastFmUsernameFragment extends Fragment implements LastFmUsernameView {
+public class SettingsFragment extends DialogFragment implements LastFmUsernameView {
 
     private LastFmUsernamePresenter presenter;
 

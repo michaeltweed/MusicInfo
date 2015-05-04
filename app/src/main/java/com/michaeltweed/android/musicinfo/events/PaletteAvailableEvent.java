@@ -6,7 +6,6 @@ public class PaletteAvailableEvent {
     private Palette palette;
 
     public PaletteAvailableEvent(Palette palette) {
-
         this.palette = palette;
     }
 

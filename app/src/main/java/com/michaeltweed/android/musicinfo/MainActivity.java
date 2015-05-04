@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -17,10 +21,9 @@ import com.michaeltweed.android.musicinfo.nowplaying.NowPlayingFragment;
 import retrofit.RestAdapter;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends ActionBarActivity {
 
     private SpotifyBroadcastReceiver receiver;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,31 @@ public class MainActivity extends FragmentActivity {
         ft.replace(R.id.now_playing_fragment, new NowPlayingFragment());
         ft.replace(R.id.artist_info_fragment, new ArtistFragment());
         ft.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openSettings() {
+        DialogFragment newFragment = new SettingsFragment();
+        newFragment.show(getSupportFragmentManager(), "settings");
     }
 
     private void setUpTestClickListeners() {
@@ -75,7 +103,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void sendTestBroadcastOne() {
-        String artist = "Bob Dylan";
+        String artist = "Van Morrison";
         String album = "testAlbum";
         String track = "testTrack";
 
@@ -88,7 +116,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void sendTestBroadcastTwo() {
-        String artist = "Neil Young";
+        String artist = "Bruce Springsteen";
         String album = "testAlbum";
         String track = "testTrack";
 
